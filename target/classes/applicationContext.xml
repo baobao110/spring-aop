@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+<!-- 手动配置 AOP -->
+<!--1 配置对象-->
+    <bean id="before1" class="simple.beFore"></bean>
+    <bean id="book" class="simple.Book"></bean>
+
+    <!--2 配置AOP的操作-->
+    <aop:config>
+        <!-- 2.1 配置切入点-->
+        <aop:pointcut id="pointcut1" expression="execution(*  simple.Book.add())"></aop:pointcut>
+        <!--2.2 配置切面 把增强用到方法上面 -->
+        <aop:aspect ref="before1">
+            <!-- 配置增强类型 method 增强类中使用哪个方法作为前置增强 -->
+            <aop:before method="before" pointcut-ref="pointcut1"></aop:before>
+            <aop:after method="after" pointcut-ref="pointcut1"/>
+            <aop:around method="round" pointcut-ref="pointcut1"/>
+        </aop:aspect>
+    </aop:config>
+    <!--这里知道切点和切面，切点就是要作用的类方法 切面是作用于切点的增强方法  -->
+    
+    
+    <!--注解方式实现AOP  -->
+    <!--开启AOP操作  -->
+    <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+    <bean id="animal" class="simple.Animal"></bean>
+     <bean id="aspect" class="simple.Aspect"></bean>
+</beans>
+
